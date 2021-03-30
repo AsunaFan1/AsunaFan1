@@ -2,15 +2,15 @@
 #IfWinActive RuneScape
 
 
-; [Win]+[=] Resizes RuneScape client
+; [Win]+[=] Resizes RuneScape client (screen size includes title bar)
 #=:: 
     WinGet, window, ID, RuneScape
     WinMove, ahk_id %window%, , , , 1920, 1080
 return
 
 
-[Win]+[-] Fixes RuneScape client to the center of the screen
-#-:: ; 
+; [Win]+[-] Fixes RuneScape client to the center of the screen
+#-::  
 	WinExist("A")
 	WinGetPos,,, sizeX, sizeY
 	WinMove, (A_ScreenWidth/2)-(sizeX/2), (A_ScreenHeight/2)-(sizeY/2)
@@ -50,10 +50,10 @@ F11::
 	global profile := 2
 	display_current_profile()
 return
-
 global skip_check := 0
 
 
+; checks to see if vigor is worn or not
 ring_check() {
 	CoordMode, Pixel, Screen
 	ImageSearch, , , 2135, 779, 2179, 820, *40, *TransBlack, C:\Users\amit_\Desktop\ring_check.png
@@ -65,7 +65,8 @@ ring_check() {
 }
 
 
-$v:: ; vigor > ult > rod
+; wear vigor, activate sun/ds/zerk, wear rod
+$v:: 
 	if (ring_check() = 0) {
 		Send {v down} ; sun/ds/zerk
 		Sleep 10
@@ -88,6 +89,32 @@ $v:: ; vigor > ult > rod
 return
 
 
+; wear vigor, activate 2h/MH weapon's special attack, wear rod
+$5::
+	if (ring_check() = 0) {
+		Send {5 down} ; weapon special attack
+		Sleep 10
+		Send {5 up}
+		Sleep 600
+		Send {DEL down} ; wield rod
+		Sleep 10
+		Send {DEL up}
+	} else {
+		Send {END down} ; wield vigor
+		Sleep 10
+		Send {END up}
+		Send {5 down} ; weapon special attack
+		Sleep 10
+		Send {5 up}
+		Sleep 600
+		Send {DEL down} ; wield rod
+		Sleep 10
+		Send {DEL up}
+	}
+return
+
+
+; wear vigor, activate eof special attack, wear rod
 $6::
 	if (ring_check() = 0) {
 		Send {6 down} ; eof spec
@@ -111,8 +138,8 @@ $6::
 	}
 return
 
-
-$[:: ; sgb spec/item switch
+; sgb spec/item switch
+$[:: 
 	if (profile = 1) {
 		Send {[ down} ; wield ecb
         	Send {I down} ; wield sgb eof
@@ -133,21 +160,21 @@ $[:: ; sgb spec/item switch
 		Send {] up} ; mage pray
 		Send {, up} ; wield MH
 		Send {. up} ; wield OH 
-	global skip_check := 1
+		global skip_check := 1
 	} else {
 		Send {[ down}
 		Sleep 30
 		Send {[ up} 
-	global skip_check := 1
+		global skip_check := 1
 	}
 return
 
 
-$`:: ; familiar spec
-	;Send {F4 down}
-	;Sleep 10
-	;Send {F4 up}
-	;Sleep 300
+$`:: familiar spec
+	Send {F4 down}
+	Sleep 10
+	Send {F4 up}
+	Sleep 300
 	Send {F5 down}
 	Sleep 10
 	Send {F5 up}
