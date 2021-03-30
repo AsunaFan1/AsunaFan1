@@ -1,0 +1,154 @@
+#SingleInstance Force
+#IfWinActive RuneScape
+
+
+; [Win]+[=] Resizes RuneScape client
+#=:: 
+    WinGet, window, ID, RuneScape
+    WinMove, ahk_id %window%, , , , 1920, 1080
+return
+
+
+[Win]+[-] Fixes RuneScape client to the center of the screen
+#-:: ; 
+	WinExist("A")
+	WinGetPos,,, sizeX, sizeY
+	WinMove, (A_ScreenWidth/2)-(sizeX/2), (A_ScreenHeight/2)-(sizeY/2)
+return
+
+
+; creates a message box showing the current profile
+profile := 0 
+display_current_profile()
+{
+	if (global profile = 0)
+		MsgBox, 0, , The current profile is %profile%: (default), 1.2
+	if (global profile = 1)
+		MsgBox, 0, , The current profile is %profile%: Telos, 1.2
+	if (global profile = 2)
+		MsgBox, 0, , The current profile is %profile%: Raksha, 1.2
+	return
+}
+
+
+; default profile
+F9:: 
+	global profile := 0
+	display_current_profile()
+return
+
+
+; Telos
+F10:: 
+	global profile := 1
+	display_current_profile()
+return
+
+
+; Raksha
+F11:: 
+	global profile := 2
+	display_current_profile()
+return
+
+global skip_check := 0
+
+
+ring_check() {
+	CoordMode, Pixel, Screen
+	ImageSearch, , , 2135, 779, 2179, 820, *40, *TransBlack, C:\Users\amit_\Desktop\ring_check.png
+	if (ErrorLevel = 0 || global skip_check = 1) {
+		return 0
+	} else { 
+		return 1
+	}
+}
+
+
+$v:: ; vigor > ult > rod
+	if (ring_check() = 0) {
+		Send {v down} ; sun/ds/zerk
+		Sleep 10
+		Send {v up}
+		Send {DEL down} ; wield rod
+		Sleep 10
+		Send {DEL up}		
+	} else {	
+		Send {END down} ; wield vigor
+		Sleep 10
+		Send {END up}
+		Send {v down} ; sun/ds/zerk
+		Sleep 10
+		Send {v up}
+		Sleep 1000
+		Send {DEL down} ; wield rod
+		Sleep 10
+		Send {DEL up}			
+	}
+return
+
+
+$6::
+	if (ring_check() = 0) {
+		Send {6 down} ; eof spec
+		Sleep 10
+		Send {6 up}
+		Sleep 600
+		Send {DEL down} ; wield rod
+		Sleep 10
+		Send {DEL up}
+	} else {
+		Send {END down} ; wield vigor
+		Sleep 10
+		Send {END up}
+		Send {6 down} ; eof spec
+		Sleep 10
+		Send {6 up}
+		Sleep 600
+		Send {DEL down} ; wield rod
+		Sleep 10
+		Send {DEL up}
+	}
+return
+
+
+$[:: ; sgb spec/item switch
+	if (profile = 1) {
+		Send {[ down} ; wield ecb
+        	Send {I down} ; wield sgb eof
+       		Send {7 down} ; ioh
+        	Send {Home down} ; range pray
+		Send {6 down} ; eof spec
+        	Sleep 300
+       		Send {[ up}
+       		Send {I up}
+       		Send {7 up}
+       		Send {Home up}
+		Send {6 up}
+		
+		Send {] down} ; mage pray
+		Send {, down} ; wield MH
+		Send {. down} ; wield OH
+		Sleep 30
+		Send {] up} ; mage pray
+		Send {, up} ; wield MH
+		Send {. up} ; wield OH 
+	global skip_check := 1
+	} else {
+		Send {[ down}
+		Sleep 30
+		Send {[ up} 
+	global skip_check := 1
+	}
+return
+
+
+$`:: ; familiar spec
+	;Send {F4 down}
+	;Sleep 10
+	;Send {F4 up}
+	;Sleep 300
+	Send {F5 down}
+	Sleep 10
+	Send {F5 up}
+return
