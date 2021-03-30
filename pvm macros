@@ -1,6 +1,7 @@
+; Thank you biganimebooty53 for the help
+
 #SingleInstance Force
 #IfWinActive RuneScape
-
 
 ; [Win]+[=] Resizes RuneScape client (screen size includes title bar)
 #=:: 
