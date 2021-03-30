@@ -170,7 +170,8 @@ $[::
 return
 
 
-$`:: familiar spec
+; Cast familiar special attack and drink spiritual prayer
+$`:: 
 	Send {F4 down}
 	Sleep 10
 	Send {F4 up}
